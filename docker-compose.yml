@@ -1,0 +1,62 @@
+version: '3.8'
+services:
+  db:
+    image: "mcr.microsoft.com/mssql/server:2017-latest"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=1Secure*Password1
+    ports:
+      - 1433:1433
+    networks:
+      - fulltest-net
+  rabbitmq:
+    container_name: rabbitmq
+    ports:
+      - '5673:5672'
+      - '15673:15672'
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    image: 'rabbitmq:3-management'
+    networks:
+      - fulltest-net
+  fullapi-compose:
+    build:
+      context: ./
+      dockerfile: FullDockerTest/Dockerfile
+    ports:
+      - '8188:80'
+    networks:
+      - fulltest-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: Staging
+    depends_on:
+      - rabbitmq
+  fullstock-compose:
+    build:
+      context: ./
+      dockerfile: Stock/Dockerfile
+    ports:
+      - '8189:80'
+    networks:
+      - fulltest-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: Staging
+    depends_on:
+      - rabbitmq
+  fullcustomer-compose:
+    build:
+      context: ./
+      dockerfile: CusomerManagement/Dockerfile
+    ports:
+      - '8187:80'
+    networks:
+      - fulltest-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: Staging
+    depends_on:
+      - rabbitmq
+      - db
+networks:
+  fulltest-net:
+    driver: bridge

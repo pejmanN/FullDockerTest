@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "DWZtxR6akd7y4ch+pfm3Iq0ElLypN9gR5FIWZMK1yjo=",
+  "Source": "FullDockerTest",
+  "BasePath": "_content/FullDockerTest",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
